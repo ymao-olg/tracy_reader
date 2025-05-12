@@ -18,7 +18,7 @@ buildscript {
     }
 }
 plugins {
-    id("org.springframework.boot") version "2.1.6.RELEASE"
+    id("org.springframework.boot") version "2.3.12.RELEASE"
     id("java")
     id("application")
     id("org.openjfx.javafxplugin") version "0.0.9"
