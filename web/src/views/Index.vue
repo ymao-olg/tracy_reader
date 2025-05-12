@@ -3,14 +3,14 @@
     class="index-wrapper"
     :class="{
       night: isNight,
-      day: !isNight
+      day: !isNight,
     }"
   >
     <div
       class="navigation-wrapper"
       :class="[
         navigationClass,
-        isWebApp && !isNight ? 'status-bar-light-bg' : ''
+        isWebApp && !isNight ? 'status-bar-light-bg' : '',
       ]"
       :style="navigationStyle"
       @touchstart="handleTouchStart"
@@ -403,29 +403,6 @@
         </div>
         <div class="setting-wrapper">
           <div class="setting-title">
-            其它
-          </div>
-          <div class="setting-item">
-            <el-tag
-              type="info"
-              :effect="isNight ? 'dark' : 'light'"
-              class="setting-btn"
-              @click="showMPCode"
-            >
-              关注公众号【假装大佬】
-            </el-tag>
-            <el-tag
-              type="info"
-              :effect="isNight ? 'dark' : 'light'"
-              class="setting-btn"
-              @click="joinTGChannel"
-            >
-              加入TG频道【假装大佬】
-            </el-tag>
-          </div>
-        </div>
-        <div class="setting-wrapper">
-          <div class="setting-title">
             本地缓存
             <span class="right-text">{{ localCacheStats.total }}</span>
           </div>
@@ -470,16 +447,6 @@
         </div>
       </div>
       <div class="bottom-icons">
-        <a href="https://github.com/hectorqin/reader" target="_blank">
-          <div class="bottom-icon">
-            <img
-              v-if="isNight"
-              :src="require('../assets/imgs/github.png')"
-              alt=""
-            />
-            <img v-else :src="require('../assets/imgs/github2.png')" alt="" />
-          </div>
-        </a>
         <span
           class="theme-item"
           :style="themeColor"
@@ -1019,14 +986,14 @@ export default {
   components: {
     Explore,
     LocalStore,
-    WebDAV
+    WebDAV,
   },
   data() {
     return {
       search: "",
       searchTypeList: [
         { name: "单源搜索", value: "single" },
-        { name: "多源搜索(过滤书名/作者名)", value: "multi" }
+        { name: "多源搜索(过滤书名/作者名)", value: "multi" },
       ],
       isSearchResult: false,
       isExploreResult: false,
@@ -1072,12 +1039,12 @@ export default {
       showSourceGroup: "",
       bookSourcePagination: {
         page: 1,
-        size: 25
+        size: 25,
       },
       checkBookSourceConfig: {
         keyword: "斗罗大陆",
         timeout: 5000,
-        concurrent: 5
+        concurrent: 5,
       },
       importBookInfo: {},
       importBookGroup: [],
@@ -1095,7 +1062,7 @@ export default {
         bookSourceList: "0 Bytes",
         rssSources: "0 Bytes",
         chapterList: "0 Bytes",
-        chapterContent: "0 Bytes"
+        chapterContent: "0 Bytes",
       },
 
       showLocalStoreManageDialog: false,
@@ -1107,8 +1074,8 @@ export default {
       showAddUser: false,
       addUserForm: {
         username: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   watch: {
@@ -1119,7 +1086,7 @@ export default {
           this.searchBook(1);
         }
       },
-      deep: true
+      deep: true,
     },
     searchResult(val) {
       if (this.isSearchResult && val.length) {
@@ -1159,7 +1126,7 @@ export default {
     importBookGroup(val) {
       if (val && this.showImportBookDialog) {
         let groupId = 0;
-        val.forEach(v => {
+        val.forEach((v) => {
           groupId |= v;
         });
         this.importBookInfo.group = groupId;
@@ -1170,7 +1137,7 @@ export default {
         // 手动处理 el-image 图片加载
         setTimeout(this.ensureLoadBookCover);
       });
-    }
+    },
   },
   mounted() {
     document.title = "阅读";
@@ -1229,12 +1196,12 @@ export default {
           } else {
             done();
           }
-        }
+        },
       })
         .then(({ value }) => {
           this.$message({
             type: "success",
-            message: "与" + value + "连接成功"
+            message: "与" + value + "连接成功",
           });
         })
         .catch(() => {});
@@ -1253,7 +1220,7 @@ export default {
           lock: true,
           text: refresh ? "正在刷新书籍信息" : "正在获取书籍信息",
           spinner: "el-icon-loading",
-          background: this.isNight ? "#222" : "#fff"
+          background: this.isNight ? "#222" : "#fff",
         });
       }
 
@@ -1326,13 +1293,13 @@ export default {
           bookSourceGroup: this.searchConfig.bookSourceGroup,
           concurrentCount: this.searchConfig.concurrentCount,
           lastIndex: this.searchLastIndex, // 多源搜索时的索引
-          page: page // 单源搜索时的page
+          page: page, // 单源搜索时的page
         },
         {
-          timeout: this.searchConfig.searchType === "single" ? 30000 : 180000
+          timeout: this.searchConfig.searchType === "single" ? 30000 : 180000,
         }
       ).then(
-        res => {
+        (res) => {
           this.loadingMore = false;
           if (res.data.isSuccess) {
             //
@@ -1345,7 +1312,7 @@ export default {
             }
             var data = [].concat(this.searchResult);
             var length = data.length;
-            resultList.forEach(v => {
+            resultList.forEach((v) => {
               if (!this.searchResultMap[v.bookUrl]) {
                 data.push(v);
               }
@@ -1356,7 +1323,7 @@ export default {
             }
           }
         },
-        error => {
+        (error) => {
           this.$message.error("搜索书籍失败 " + (error && error.toString()));
         }
       );
@@ -1391,7 +1358,7 @@ export default {
         bookSourceGroup: this.searchConfig.bookSourceGroup,
         concurrentCount: this.searchConfig.concurrentCount,
         lastIndex: this.searchLastIndex, // 多源搜索时的索引
-        page: page // 单源搜索时的page
+        page: page, // 单源搜索时的page
       };
 
       this.isSearchResult = true;
@@ -1405,9 +1372,9 @@ export default {
       tryClose();
 
       this.searchEventSource = new EventSource(url, {
-        withCredentials: true
+        withCredentials: true,
       });
-      this.searchEventSource.addEventListener("error", e => {
+      this.searchEventSource.addEventListener("error", (e) => {
         this.loadingMore = false;
         tryClose();
         try {
@@ -1422,7 +1389,7 @@ export default {
         }
       });
       let oldSearchResultLength = this.searchResult.length;
-      this.searchEventSource.addEventListener("end", e => {
+      this.searchEventSource.addEventListener("end", (e) => {
         this.loadingMore = false;
         tryClose();
         try {
@@ -1439,7 +1406,7 @@ export default {
           //
         }
       });
-      this.searchEventSource.addEventListener("message", e => {
+      this.searchEventSource.addEventListener("message", (e) => {
         try {
           if (e.data) {
             const result = JSON.parse(e.data);
@@ -1448,7 +1415,7 @@ export default {
             }
             if (result.data) {
               var data = [].concat(this.searchResult);
-              result.data.forEach(v => {
+              result.data.forEach((v) => {
                 if (!this.searchResultMap[v.bookUrl]) {
                   data.push(v);
                 }
@@ -1480,16 +1447,16 @@ export default {
         origin: book.origin,
         originName: book.originName,
         latestChapterTitle: book.latestChapterTitle,
-        intro: book.intro
+        intro: book.intro,
       });
       this.$router.push({
-        path: "/reader" + (this.isSearchResult ? "?search=1" : "")
+        path: "/reader" + (this.isSearchResult ? "?search=1" : ""),
       });
     },
     async addBookToShelf(book) {
       const customImportBookInfo = await this.customImportBookInfo({
         title: "设置分组",
-        cancelButtonText: "暂不加入"
+        cancelButtonText: "暂不加入",
       });
       if (customImportBookInfo === false) {
         return;
@@ -1502,7 +1469,7 @@ export default {
         return Promise.reject(false);
       }
       return Axios.post(this.api + "/saveBook", book).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             //
             if (isImport) {
@@ -1523,7 +1490,7 @@ export default {
             return res.data.data;
           }
         },
-        error => {
+        (error) => {
           this.$message.error(
             (isImport
               ? "导入书籍失败"
@@ -1545,7 +1512,7 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         }
       ).catch(() => {
         return false;
@@ -1554,14 +1521,14 @@ export default {
         return;
       }
       Axios.post(this.api + "/deleteBook", book).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             //
             this.$message.success("删除成功");
             this.loadBookshelf();
           }
         },
-        error => {
+        (error) => {
           this.$message.error("删除失败 " + (error && error.toString()));
         }
       );
@@ -1599,7 +1566,7 @@ export default {
                 {
                   confirmButtonText: "确定",
                   cancelButtonText: "取消",
-                  type: "warning"
+                  type: "warning",
                 }
               ).catch(() => {
                 return false;
@@ -1622,7 +1589,7 @@ export default {
     },
     currentDateTime() {
       const now = new Date();
-      const pad = a => (a < 10 ? "0" + a : a);
+      const pad = (a) => (a < 10 ? "0" + a : a);
       return (
         now.getFullYear() +
         pad(now.getMonth() + 1) +
@@ -1691,12 +1658,12 @@ export default {
       // console.log("rawFile", rawFile);
       const reader = new FileReader();
       const sourceTypeName = isRssSource ? "RSS源" : "书源";
-      reader.onload = e => {
+      reader.onload = (e) => {
         const data = e.target.result;
         try {
           const sourceList = JSON.parse(data);
           if (Array.isArray(sourceList) && sourceList.length) {
-            this.importSourceList = sourceList.map(v => {
+            this.importSourceList = sourceList.map((v) => {
               if (v.headerMap) {
                 if (!v.header) {
                   v.header =
@@ -1723,13 +1690,13 @@ export default {
         let param = new FormData();
         param.append("file", rawFile);
         Axios.post(this.api + "/readSourceFile", param, {
-          headers: { "Content-Type": "multipart/form-data" }
+          headers: { "Content-Type": "multipart/form-data" },
         }).then(
-          res => {
+          (res) => {
             if (res.data.isSuccess) {
               //
               let sourceList = [];
-              res.data.data.forEach(v => {
+              res.data.data.forEach((v) => {
                 try {
                   const data = JSON.parse(v);
                   if (Array.isArray(data)) {
@@ -1740,7 +1707,7 @@ export default {
                 }
               });
               if (sourceList.length) {
-                this.importSourceList = sourceList.map(v => {
+                this.importSourceList = sourceList.map((v) => {
                   if (v.headerMap) {
                     if (!v.header) {
                       v.header =
@@ -1759,7 +1726,7 @@ export default {
               }
             }
           },
-          error => {
+          (error) => {
             this.$message.error(
               "读取" +
                 sourceTypeName +
@@ -1784,7 +1751,7 @@ export default {
       const res = await this.$prompt("请输入远程书源链接", "导入远程书源文件", {
         inputValue: lastRemoteSourceUrl || "",
         confirmButtonText: "确定",
-        cancelButtonText: "取消"
+        cancelButtonText: "取消",
       }).catch(() => {
         return false;
       });
@@ -1792,14 +1759,14 @@ export default {
         return;
       }
       Axios.post(this.api + "/readRemoteSourceFile", {
-        url: res.value
+        url: res.value,
       }).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             setCache(this.currentUserName + "@lastRemoteSourceUrl", res.value);
             //
             let sourceList = [];
-            res.data.data.forEach(v => {
+            res.data.data.forEach((v) => {
               try {
                 const data = JSON.parse(v);
                 if (Array.isArray(data)) {
@@ -1818,7 +1785,7 @@ export default {
             }
           }
         },
-        error => {
+        (error) => {
           this.$message.error(
             "读取远程书源文件内容失败 " + (error && error.toString())
           );
@@ -1841,7 +1808,7 @@ export default {
               }
               return i;
             })
-            .filter(v => v)
+            .filter((v) => v)
         : [];
       if (val && hasFilterd) {
         this.$message.info("部分使用了Javascript和Webview的书源未勾选");
@@ -1877,14 +1844,14 @@ export default {
         return;
       }
       const sourceList = this.checkedSourceIndex.map(
-        v => this.importSourceList[v]
+        (v) => this.importSourceList[v]
       );
       Axios.post(
         this.api +
           (this.isImportRssSource ? "/saveRssSources" : "/saveBookSources"),
         sourceList
       ).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             //
             this.$message.success(
@@ -1900,7 +1867,7 @@ export default {
             this.checkedSourceIndex = [];
           }
         },
-        error => {
+        (error) => {
           this.$message.error(
             (this.isImportRssSource ? "导入RSS源失败 " : "导入书源失败 ") +
               (error && error.toString())
@@ -1910,7 +1877,7 @@ export default {
     },
     isBookSourceSelectable(bookSource) {
       const res = [];
-      (this.$store.state.shelfBooks || []).forEach(v => {
+      (this.$store.state.shelfBooks || []).forEach((v) => {
         if (v.origin === bookSource.bookSourceUrl) {
           res.push(v.name);
         }
@@ -1919,7 +1886,7 @@ export default {
     },
     showSourceBook(bookSource) {
       const res = [];
-      (this.$store.state.shelfBooks || []).forEach(v => {
+      (this.$store.state.shelfBooks || []).forEach((v) => {
         if (v.origin === bookSource.bookSourceUrl) {
           res.push(v.name);
         }
@@ -1932,13 +1899,13 @@ export default {
         return;
       }
       Axios.post(this.api + "/getInvalidBookSources").then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             //
-            res.data.data.forEach(v => {
+            res.data.data.forEach((v) => {
               this.$store.commit("addFailureBookSource", {
                 bookSourceUrl: v.sourceUrl,
-                errorMsg: v.error
+                errorMsg: v.error,
               });
             });
           }
@@ -1957,7 +1924,7 @@ export default {
       this.$store.commit("setFailureIncludeTimeout", true);
       const limitFunc = LimitResquest(
         this.checkBookSourceConfig.concurrent,
-        handler => {
+        (handler) => {
           this.checkBookSourceTip =
             handler.requestCount + "/" + this.bookSourceList.length;
           if (handler.isEnd()) {
@@ -1966,17 +1933,17 @@ export default {
           }
         }
       );
-      this.bookSourceList.forEach(v => {
+      this.bookSourceList.forEach((v) => {
         limitFunc(() => {
           return Axios.post(
             this.api + "/searchBook",
             {
               key: this.checkBookSourceConfig.keyword,
-              bookSourceUrl: v.bookSourceUrl
+              bookSourceUrl: v.bookSourceUrl,
             },
             {
               timeout: this.checkBookSourceConfig.timeout,
-              silent: true
+              silent: true,
             }
           );
         });
@@ -1990,7 +1957,7 @@ export default {
       const res = await this.$confirm("确认要删除所选择的书源吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).catch(() => {
         return false;
       });
@@ -2001,7 +1968,7 @@ export default {
         this.api + "/deleteBookSources",
         this.manageSourceSelection
       ).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             this.$store.commit(
               "removeFailureBookSource",
@@ -2012,7 +1979,7 @@ export default {
             this.loadBookSource(true);
           }
         },
-        error => {
+        (error) => {
           this.$message.error("删除书源失败 " + (error && error.toString()));
         }
       );
@@ -2046,7 +2013,7 @@ export default {
       }
       const userConfig = {};
       ["config", "shelfConfig", "searchConfig", "customConfigList"].forEach(
-        key => {
+        (key) => {
           const val = getCache(key);
           if (val) {
             userConfig[key] = val;
@@ -2054,12 +2021,12 @@ export default {
         }
       );
       Axios.post(this.api + "/saveUserConfig", userConfig).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             this.$message.success("备份成功");
           }
         },
-        error => {
+        (error) => {
           this.$message.error("备份失败 " + (error && error.toString()));
         }
       );
@@ -2079,7 +2046,7 @@ export default {
         return;
       }
       Axios.get(this.api + "/getUserConfig").then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             for (const key in res.data.data) {
               if (Object.hasOwnProperty.call(res.data.data, key)) {
@@ -2090,7 +2057,7 @@ export default {
             this.$message.success("恢复成功");
           }
         },
-        error => {
+        (error) => {
           this.$message.error("恢复失败 " + (error && error.toString()));
         }
       );
@@ -2101,17 +2068,17 @@ export default {
         return;
       }
       Axios.get(this.api + "/getUserList").then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             this.userNS = this.$store.state.userInfo.username;
-            this.userList = res.data.data.map(v => ({
+            this.userList = res.data.data.map((v) => ({
               ...v,
-              userNS: v.username
+              userNS: v.username,
             }));
             this.$store.commit("setIsManagerMode", true);
           }
         },
-        error => {
+        (error) => {
           this.$message.error(
             "加载用户空间失败 " + (error && error.toString())
           );
@@ -2143,7 +2110,7 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         }
       ).catch(() => {
         return false;
@@ -2152,12 +2119,12 @@ export default {
         return;
       }
       Axios.post(this.api + "/backupToWebdav").then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             this.$message.success("备份成功");
           }
         },
-        error => {
+        (error) => {
           this.$message.error("备份失败 " + (error && error.toString()));
         }
       );
@@ -2194,7 +2161,7 @@ export default {
             // 往右拉，打开目录
             if (this.touchMoveTimes % 3 === 0) {
               this.navigationStyle = {
-                marginLeft: moveX - 270 + "px"
+                marginLeft: moveX - 270 + "px",
               };
             }
             this.lastMoveX = moveX;
@@ -2202,7 +2169,7 @@ export default {
             // 往左拉，关闭目录
             if (this.touchMoveTimes % 3 === 0) {
               this.navigationStyle = {
-                marginLeft: moveX + "px"
+                marginLeft: moveX + "px",
               };
             }
             this.lastMoveX = moveX;
@@ -2256,9 +2223,9 @@ export default {
         param.append("file" + i, file);
       }
       Axios.post(this.api + "/importBookPreview", param, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { "Content-Type": "multipart/form-data" },
       }).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess && res.data.data.length) {
             if (res.data.data.length > 1) {
               // 批量导入
@@ -2272,7 +2239,7 @@ export default {
             }
           }
         },
-        error => {
+        (error) => {
           this.$message.error("上传书籍 " + (error && error.toString()));
         }
       );
@@ -2298,9 +2265,9 @@ export default {
           type: "warning",
           closeOnClickModal: false,
           closeOnPressEscape: false,
-          distinguishCancelAndClose: true
+          distinguishCancelAndClose: true,
         }
-      ).catch(action => {
+      ).catch((action) => {
         return action === "close" ? "close" : false;
       });
       if (res === "close") {
@@ -2328,7 +2295,7 @@ export default {
       }
     },
     waitForImportBook(bookInfo) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         this.importBookInfo = bookInfo.book;
         this.importBookGroup = [];
         this.importBookChapters = bookInfo.chapters;
@@ -2349,10 +2316,10 @@ export default {
       Axios.post(
         this.api + "/deleteFile",
         {
-          url
+          url,
         },
         {
-          silent: true
+          silent: true,
         }
       ).then(
         () => {
@@ -2371,13 +2338,13 @@ export default {
         showCancelButton: true,
         confirmButtonText: "确定",
         cancelButtonText: "取消导入",
-        ...(options || {})
-      }).catch(action => {
+        ...(options || {}),
+      }).catch((action) => {
         return action === "close" ? "close" : false;
       });
       if (res === "confirm") {
         return {
-          group: this.importBookGroup.reduce((v, c) => v | c, 0)
+          group: this.importBookGroup.reduce((v, c) => v | c, 0),
         };
       } else {
         return false;
@@ -2415,14 +2382,14 @@ export default {
         },
         data() {
           return {
-            importBookGroup: []
+            importBookGroup: [],
           };
         },
         methods: {
           change() {
             shelf.importBookGroup = this.importBookGroup;
-          }
-        }
+          },
+        },
       });
       var custComp = Vue.component("custComp");
       return this.$createElement(custComp);
@@ -2441,16 +2408,16 @@ export default {
         return this.shelfBooks;
       } else if (bookGroup === -2) {
         // 本地
-        return this.shelfBooks.filter(v => v.origin === "loc_book");
+        return this.shelfBooks.filter((v) => v.origin === "loc_book");
       } else if (bookGroup === -3) {
         // 音频
-        return this.shelfBooks.filter(v => v.type === 1);
+        return this.shelfBooks.filter((v) => v.type === 1);
       } else if (bookGroup === -4) {
         // 未分组
-        return this.shelfBooks.filter(v => v.group === 0);
+        return this.shelfBooks.filter((v) => v.group === 0);
       }
 
-      return this.shelfBooks.filter(v =>
+      return this.shelfBooks.filter((v) =>
         bookGroup === 0 ? true : v.group & bookGroup
       );
     },
@@ -2466,11 +2433,11 @@ export default {
     noop() {},
     exportBookSource() {
       Axios.get(this.api + "/getBookSources").then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             const aEle = document.createElement("a");
             const blob = new Blob([
-              JSON.stringify(res.data.data || [], null, 4)
+              JSON.stringify(res.data.data || [], null, 4),
             ]);
 
             aEle.download = "reader书源-" + this.currentDateTime() + ".json";
@@ -2478,7 +2445,7 @@ export default {
             aEle.click();
           }
         },
-        error => {
+        (error) => {
           this.$message.error("导出书源失败 " + (error && error.toString()));
         }
       );
@@ -2487,7 +2454,7 @@ export default {
       const res = await this.$confirm(`确认要清空所有书源吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).catch(() => {
         return false;
       });
@@ -2495,14 +2462,14 @@ export default {
         return;
       }
       Axios.post(this.api + "/deleteAllBookSources").then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             //
             this.$message.success("清空书源成功");
             this.loadBookSource(true);
           }
         },
-        error => {
+        (error) => {
           this.$message.error("清空书源失败 " + (error && error.toString()));
         }
       );
@@ -2511,7 +2478,7 @@ export default {
       const res = await this.$confirm(`确认要恢复默认书源吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       }).catch(() => {
         return false;
       });
@@ -2519,20 +2486,20 @@ export default {
         return;
       }
       Axios.post(this.api + "/deleteBookSourcesFile").then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             //
             this.$message.success("恢复默认书源成功");
             this.loadBookSource(true);
           }
         },
-        error => {
+        (error) => {
           this.$message.error("操作失败 " + (error && error.toString()));
         }
       );
     },
     editBookSource(bookSource) {
-      const editHandler = data => {
+      const editHandler = (data) => {
         eventBus.$emit(
           "showEditor",
           "编辑书源",
@@ -2549,7 +2516,7 @@ export default {
                 return;
               }
               Axios.post(this.api + "/saveBookSource", source).then(
-                res => {
+                (res) => {
                   if (res.data.isSuccess) {
                     //
                     close();
@@ -2557,7 +2524,7 @@ export default {
                     this.loadBookSource(true);
                   }
                 },
-                error => {
+                (error) => {
                   this.$message.error(
                     "保存书源失败 " + (error && error.toString())
                   );
@@ -2582,7 +2549,7 @@ export default {
           exploreUrl: "",
           ruleBookInfo: {},
           ruleContent: {
-            content: ""
+            content: "",
           },
           ruleExplore: {},
           ruleSearch: {
@@ -2593,27 +2560,27 @@ export default {
             intro: "",
             kind: "",
             lastChapter: "",
-            name: ""
+            name: "",
           },
           ruleToc: {
             chapterList: "",
             chapterName: "",
-            chapterUrl: ""
+            chapterUrl: "",
           },
-          searchUrl: ""
+          searchUrl: "",
         });
         return;
       }
       Axios.post(this.api + "/getBookSource", {
-        bookSourceUrl: bookSource.bookSourceUrl
+        bookSourceUrl: bookSource.bookSourceUrl,
       }).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             //
             editHandler(res.data.data);
           }
         },
-        error => {
+        (error) => {
           this.$message.error(
             "加载书源信息失败 " + (error && error.toString())
           );
@@ -2635,14 +2602,14 @@ export default {
             console.log("Try to clear home cache");
             navigator.serviceWorker.controller &&
               navigator.serviceWorker.controller.postMessage({
-                type: "CLEAR_HOME_CACHE"
+                type: "CLEAR_HOME_CACHE",
               });
 
             /* eslint-disable-next-line no-console */
             console.log("Try to skip waiting");
             navigator.serviceWorker.controller &&
               navigator.serviceWorker.controller.postMessage({
-                type: "SKIP_WAITING"
+                type: "SKIP_WAITING",
               });
 
             setTimeout(() => {
@@ -2661,7 +2628,7 @@ export default {
         rssSources: (await this.analyseLocalStorage("rssSources")).totalBytes,
         chapterList: (await this.analyseLocalStorage("chapterList")).totalBytes,
         chapterContent: (await this.analyseLocalStorage("chapterContent"))
-          .totalBytes
+          .totalBytes,
       };
     },
     analyseLocalStorage(match) {
@@ -2679,7 +2646,7 @@ export default {
         .then(() => {
           return {
             totalBytes: formatSize(totalBytes),
-            cacheBytes: formatSize(cacheBytes)
+            cacheBytes: formatSize(cacheBytes),
           };
         })
         .catch(function() {
@@ -2702,7 +2669,7 @@ export default {
           this.scanCacheStorage();
 
           return {
-            cacheBytes: formatSize(cacheBytes)
+            cacheBytes: formatSize(cacheBytes),
           };
         })
         .catch(function() {
@@ -2718,26 +2685,26 @@ export default {
     },
     logout() {
       Axios.post(this.api + "/logout").then(
-        res => {
+        (res) => {
           if (res.data.isSuccess) {
             this.$store.commit("setToken", "");
             window.location.reload(true);
           }
         },
-        error => {
+        (error) => {
           this.$message.error("注销失败 " + (error && error.toString()));
         }
       );
     },
     getChapterListByRule() {
       return Axios.post("/getChapterListByRule", this.importBookInfo).then(
-        res => {
+        (res) => {
           if (res.data.isSuccess && res.data.data.book) {
             this.importBookInfo = res.data.data.book;
             this.importBookChapters = res.data.data.chapters;
           }
         },
-        error => {
+        (error) => {
           this.$message.error("注销失败 " + (error && error.toString()));
         }
       );
@@ -2756,13 +2723,13 @@ export default {
       this.$refs.bookList.dispatchEvent(new MouseEvent("scroll"));
 
       // 上面一步应该能搞定，下面再确认一下
-      this.$refs.bookCoverList.forEach(v => {
+      this.$refs.bookCoverList.forEach((v) => {
         if (!v.show && isInContainer(v.$el, this.$refs.bookList)) {
           // console.log("not show ", v);
           v.show = true;
         }
       });
-    }
+    },
   },
   computed: {
     ...mapGetters([
@@ -2771,7 +2738,7 @@ export default {
       "dialogSmallWidth",
       "dialogTop",
       "dialogContentHeight",
-      "popupWidth"
+      "popupWidth",
     ]),
     config() {
       return this.$store.getters.config;
@@ -2782,11 +2749,11 @@ export default {
     themeColor() {
       if (this.$store.getters.isNight) {
         return {
-          background: "#f7f7f7"
+          background: "#f7f7f7",
         };
       } else {
         return {
-          background: "#222"
+          background: "#222",
         };
       }
     },
@@ -2795,8 +2762,8 @@ export default {
     },
     bookCoverList() {
       return this.bookList
-        .filter(v => this.getBookCoverUrl(v))
-        .map(v => this.getCover(this.getBookCoverUrl(v), true));
+        .filter((v) => this.getBookCoverUrl(v))
+        .map((v) => this.getCover(this.getBookCoverUrl(v), true));
     },
     shelfBooks() {
       return this.$store.getters.shelfBooks;
@@ -2827,7 +2794,7 @@ export default {
         : {
             name: "尚无阅读记录",
             bookUrl: "",
-            index: 0
+            index: 0,
           };
     },
     loginAuth() {
@@ -2845,7 +2812,7 @@ export default {
         if (val) {
           this.$store.commit("setIsManagerMode", true);
         }
-      }
+      },
     },
     userList: {
       get() {
@@ -2853,7 +2820,7 @@ export default {
       },
       set(val) {
         this.$store.commit("setUserList", val);
-      }
+      },
     },
     bookSourceShowList() {
       return this.isShowFailureBookSource
@@ -2862,7 +2829,7 @@ export default {
     },
     bookSourceGroupList() {
       const groupsMap = {};
-      this.bookSourceList.forEach(v => {
+      this.bookSourceList.forEach((v) => {
         if (v.bookSourceGroup) {
           groupsMap[v.bookSourceGroup] = (groupsMap[v.bookSourceGroup] | 0) + 1;
         }
@@ -2871,15 +2838,15 @@ export default {
         {
           name: "全部分组",
           value: "",
-          count: this.bookSourceList.length
-        }
+          count: this.bookSourceList.length,
+        },
       ];
       for (const i in groupsMap) {
         if (Object.hasOwnProperty.call(groupsMap, i)) {
           groups.push({
             name: i,
             value: i,
-            count: groupsMap[i]
+            count: groupsMap[i],
           });
         }
       }
@@ -2888,7 +2855,7 @@ export default {
     bookSourceShowGroup() {
       if (!this.isShowFailureBookSource) {
         const groups = new Set();
-        this.bookSourceShowList.forEach(v => {
+        this.bookSourceShowList.forEach((v) => {
           v.bookSourceGroup && groups.add(v.bookSourceGroup);
         });
         groups.add("未分组");
@@ -2905,13 +2872,13 @@ export default {
         return this.bookSourceShowList;
       }
       if (this.isShowFailureBookSource) {
-        return this.bookSourceShowList.filter(v =>
+        return this.bookSourceShowList.filter((v) =>
           this.showSourceGroup
             ? v.errorMsg.indexOf(this.showSourceGroup) >= 0
             : true
         );
       } else {
-        return this.bookSourceShowList.filter(v =>
+        return this.bookSourceShowList.filter((v) =>
           this.showSourceGroup === "未分组"
             ? !v.bookSourceGroup
             : v.bookSourceGroup === this.showSourceGroup
@@ -2940,9 +2907,9 @@ export default {
       set(val) {
         this.$store.commit("setShelfConfig", {
           ...this.$store.state.shelfConfig,
-          showBookGroup: val
+          showBookGroup: val,
         });
-      }
+      },
     },
     showBookGroupString: {
       get() {
@@ -2950,14 +2917,14 @@ export default {
       },
       set(val) {
         this.showBookGroup = +val;
-      }
+      },
     },
     bookGroupSetList() {
-      return this.$store.state.bookGroupList.filter(v => v.groupId > 0);
+      return this.$store.state.bookGroupList.filter((v) => v.groupId > 0);
     },
     bookGroupDisplayList() {
       return this.$store.state.bookGroupList
-        .filter(v => this.getShowShelfBooks(v.groupId).length && v.show)
+        .filter((v) => this.getShowShelfBooks(v.groupId).length && v.show)
         .sort((a, b) => a.order - b.order);
     },
     searchConfig: {
@@ -2966,7 +2933,7 @@ export default {
       },
       set(val) {
         this.$store.commit("setSearchConfig", val);
-      }
+      },
     },
     isShowTocRule() {
       try {
@@ -2996,11 +2963,11 @@ export default {
           { name: "根据 Spin 获取章节", rule: "spin" },
           { name: "根据 Toc 获取章节，使用 Spin 补充章节名", rule: "toc+spin" },
           { name: "根据 Toc 获取章节，强制使用 Spin 章节名", rule: "toc<spin" },
-          { name: "根据 Toc 获取章节", rule: "toc" }
+          { name: "根据 Toc 获取章节", rule: "toc" },
         ];
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

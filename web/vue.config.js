@@ -3,7 +3,7 @@ var packageInfo = require("./package.json");
 
 function buildVersion() {
   const now = new Date();
-  const pad = v => (v >= 10 ? "" + v : "0" + v);
+  const pad = (v) => (v >= 10 ? "" + v : "0" + v);
   return (
     pad(now.getMonth() + 1) +
     pad(now.getDate()) +
@@ -24,7 +24,7 @@ function customWorkboxPlugin(generateCacheKey, checkResponse) {
       request,
       response,
       event,
-      state
+      state,
     }) {
       // console.log({ request, response, event, state });
       const resCopy = response.clone();
@@ -33,7 +33,7 @@ function customWorkboxPlugin(generateCacheKey, checkResponse) {
           request,
           response: resCopy,
           event,
-          state
+          state,
         });
       }
       const body = await resCopy.json().catch(() => false);
@@ -50,7 +50,7 @@ function customWorkboxPlugin(generateCacheKey, checkResponse) {
       mode,
       params,
       event,
-      state
+      state,
     }) {
       // `request` is the `Request` object that would otherwise be used as the cache key.
       // `mode` is either 'read' or 'write'.
@@ -70,13 +70,13 @@ function customWorkboxPlugin(generateCacheKey, checkResponse) {
           mode,
           params,
           event,
-          state
+          state,
         });
         return cacheKey || request;
       } else {
         return request;
       }
-    }
+    },
   };
 }
 
@@ -84,7 +84,7 @@ module.exports = {
   publicPath: "./",
   productionSourceMap: false,
   devServer: {
-    port: 8081
+    port: 8081,
   },
   // 编译依赖为 es5
   transpileDependencies: ["element-ui", "codejar", "vue-lazyload"],
@@ -98,7 +98,7 @@ module.exports = {
 
     manifestOptions: {
       // display: "standalone"
-      display: "fullscreen"
+      display: "fullscreen",
     },
 
     // configure the workbox plugin
@@ -119,9 +119,9 @@ module.exports = {
           options: {
             cacheName: "home",
             cacheableResponse: {
-              statuses: [200]
-            }
-          }
+              statuses: [200],
+            },
+          },
         },
         // {
         //   // 获取书架
@@ -218,11 +218,11 @@ module.exports = {
           options: {
             cacheName: "bookCover",
             cacheableResponse: {
-              statuses: [200]
+              statuses: [200],
             },
             expiration: {
               maxAgeSeconds: 86400 * 30,
-              maxEntries: 1000
+              maxEntries: 1000,
             },
             plugins: [
               customWorkboxPlugin(
@@ -236,11 +236,11 @@ module.exports = {
                   }
                   return null;
                 }
-              )
-            ]
-          }
-        }
-      ]
-    }
-  }
+              ),
+            ],
+          },
+        },
+      ],
+    },
+  },
 };
